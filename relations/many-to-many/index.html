@@ -1,0 +1,1772 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Relations for CodeIgniter 4 framework">
+      
+      
+      
+      
+        <link rel="prev" href="../has-many-through/">
+      
+      
+        <link rel="next" href="../morph-one/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/favicon.ico">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>Many to many / Belongs To many - CodeIgniter Relations</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/github-dark-dimmed.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#many-to-many-belongs-to-many" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="https://michalsn.github.io/codeigniter-relations" title="CodeIgniter Relations" class="md-header__button md-logo" aria-label="CodeIgniter Relations" data-md-component="logo">
+      
+  <img src="../../assets/flame.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            CodeIgniter Relations
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Many to many / Belongs To many
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/michalsn/codeigniter-relations" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="https://michalsn.github.io/codeigniter-relations" title="CodeIgniter Relations" class="md-nav__button md-logo" aria-label="CodeIgniter Relations" data-md-component="logo">
+      
+  <img src="../../assets/flame.svg" alt="logo">
+
+    </a>
+    CodeIgniter Relations
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/michalsn/codeigniter-relations" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Installation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../configuration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Configuration
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../basic_usage/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Basic Usage
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Relations
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Relations
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../one-to-one/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    One to one / Has One
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../one-to-many/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    One to many / Has Many
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../one-to-many-inverse/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    One to many (inverse) / Belongs To
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../has-one-of-many/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Has one of many
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../has-one-through/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Has one through
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../has-many-through/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Has many through
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Many to many / Belongs To many
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Many to many / Belongs To many
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#when-to-use" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        When to Use
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#database-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Database Structure
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Database Structure">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pivot-table-naming-convention" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pivot Table Naming Convention
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#defining-the-relation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Defining the Relation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Defining the Relation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#custom-pivot-table-and-keys" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Custom Pivot Table and Keys
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reading-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reading Data
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Reading Data">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#eager-loading" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Eager Loading
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lazy-loading" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lazy Loading
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#with-query-constraints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        With Query Constraints
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pivot-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pivot Data
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pivot Data">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#retrieving-pivot-columns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Retrieving Pivot Columns
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#custom-pivot-accessor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Custom Pivot Accessor
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#including-timestamps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Including Timestamps
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#writing-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Writing Data
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Writing Data">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#attaching-records" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Attaching Records
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Attaching Records">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#attaching-with-pivot-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Attaching with Pivot Data
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#detaching-records" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Detaching Records
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#syncing-relationships" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Syncing Relationships
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Syncing Relationships">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#syncing-with-pivot-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Syncing with Pivot Data
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#creating-and-attaching-new-records" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Creating and Attaching New Records
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#available-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Available Methods
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../morph-one/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Morph one
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../morph-many/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Morph many
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../morph-one-of-many/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Morph one of many
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../morph-to/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Morph to
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#when-to-use" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        When to Use
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#database-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Database Structure
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Database Structure">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pivot-table-naming-convention" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pivot Table Naming Convention
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#defining-the-relation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Defining the Relation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Defining the Relation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#custom-pivot-table-and-keys" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Custom Pivot Table and Keys
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reading-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reading Data
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Reading Data">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#eager-loading" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Eager Loading
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lazy-loading" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lazy Loading
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#with-query-constraints" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        With Query Constraints
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pivot-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pivot Data
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pivot Data">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#retrieving-pivot-columns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Retrieving Pivot Columns
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#custom-pivot-accessor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Custom Pivot Accessor
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#including-timestamps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Including Timestamps
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#writing-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Writing Data
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Writing Data">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#attaching-records" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Attaching Records
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Attaching Records">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#attaching-with-pivot-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Attaching with Pivot Data
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#detaching-records" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Detaching Records
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#syncing-relationships" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Syncing Relationships
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Syncing Relationships">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#syncing-with-pivot-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Syncing with Pivot Data
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#creating-and-attaching-new-records" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Creating and Attaching New Records
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#available-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Available Methods
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="many-to-many-belongs-to-many">Many to many / Belongs To many</h1>
+<p>A many-to-many relationship between two models using an intermediate pivot table to link records.</p>
+<h3 id="when-to-use">When to Use</h3>
+<p>Use <code>BelongsToMany</code> when both models can have multiple related records. Common examples:</p>
+<ul>
+<li>Students belong to many Courses (and Courses have many Students)</li>
+<li>Users belong to many Roles (and Roles have many Users)</li>
+<li>Products belong to many Tags (and Tags have many Products)</li>
+</ul>
+<h3 id="database-structure">Database Structure</h3>
+<pre class="highlight"><code>students
+--------
+id                (primary key)
+name
+email
+enrollment_date
+
+courses
+-------
+id                (primary key)
+title
+code
+credits
+
+course_student (pivot)
+----------------------
+id                (primary key)
+course_id         (foreign key to courses)
+student_id        (foreign key to students)
+grade             (optional pivot data)
+created_at
+updated_at</code></pre>
+<h4 id="pivot-table-naming-convention">Pivot Table Naming Convention</h4>
+<p>The pivot table name should be derived from both table names in <strong>alphabetical order</strong> and <strong>singular form</strong>:</p>
+<ul>
+<li><code>course_student</code> (correct)</li>
+<li>NOT <code>student_course</code></li>
+<li>NOT <code>courses_students</code></li>
+</ul>
+<h3 id="defining-the-relation">Defining the Relation</h3>
+<pre class="highlight"><code class="language-php">use Michalsn\CodeIgniterRelations\Relations\BelongsToMany;
+use Michalsn\CodeIgniterRelations\Traits\HasRelations;
+
+class StudentModel extends Model
+{
+    use HasRelations;
+
+    protected $table = 'students';
+    protected $returnType = Student::class;
+
+    public function courses(): BelongsToMany
+    {
+        return $this-&gt;belongsToMany(CourseModel::class);
+    }
+}</code></pre>
+<pre class="highlight"><code class="language-php">class CourseModel extends Model
+{
+    use HasRelations;
+
+    protected $table = 'courses';
+    protected $returnType = Course::class;
+
+    public function students(): BelongsToMany
+    {
+        return $this-&gt;belongsToMany(StudentModel::class);
+    }
+}</code></pre>
+<h4 id="custom-pivot-table-and-keys">Custom Pivot Table and Keys</h4>
+<pre class="highlight"><code class="language-php">public function courses(): BelongsToMany
+{
+    return $this-&gt;belongsToMany(
+        CourseModel::class,
+        'enrollments',      // Custom pivot table
+        'student_key',      // Parent foreign key in pivot
+        'course_key',       // Related foreign key in pivot
+        'id',               // Parent primary key
+        'id'                // Related primary key
+    );
+}</code></pre>
+<h3 id="reading-data">Reading Data</h3>
+<h4 id="eager-loading">Eager Loading</h4>
+<pre class="highlight"><code class="language-php">// Get student with courses
+$student = model(StudentModel::class)-&gt;with('courses')-&gt;find(1);
+foreach ($student-&gt;courses as $course) {
+    echo "{$course-&gt;title} ({$course-&gt;code})";
+}
+
+// Get course with students
+$course = model(CourseModel::class)-&gt;with('students')-&gt;find(1);
+foreach ($course-&gt;students as $student) {
+    echo $student-&gt;name;
+}</code></pre>
+<h4 id="lazy-loading">Lazy Loading</h4>
+<pre class="highlight"><code class="language-php">$student = model(StudentModel::class)-&gt;find(1);
+foreach ($student-&gt;courses as $course) {
+    echo $course-&gt;title; // Courses are loaded automatically
+}</code></pre>
+<h4 id="with-query-constraints">With Query Constraints</h4>
+<pre class="highlight"><code class="language-php">$student = model(StudentModel::class)
+    -&gt;with('courses', fn($model) =&gt; $model-&gt;where('courses.credits &gt;', 3))
+    -&gt;find(1);</code></pre>
+<h3 id="pivot-data">Pivot Data</h3>
+<h4 id="retrieving-pivot-columns">Retrieving Pivot Columns</h4>
+<p>By default, only foreign keys are included. Use <code>withPivot()</code> to retrieve additional columns:</p>
+<pre class="highlight"><code class="language-php">public function courses(): BelongsToMany
+{
+    return $this-&gt;belongsToMany(CourseModel::class)
+        -&gt;withPivot('grade');  // Single column
+}
+
+public function coursesWithDetails(): BelongsToMany
+{
+    return $this-&gt;belongsToMany(CourseModel::class)
+        -&gt;withPivot(['grade', 'enrolled_at', 'completed_at']);  // Multiple columns
+}</code></pre>
+<p>Access pivot data on related records:</p>
+<pre class="highlight"><code class="language-php">$student = model(StudentModel::class)-&gt;with('courses')-&gt;find(1);
+
+foreach ($student-&gt;courses as $course) {
+    echo $course-&gt;title;
+    echo $course-&gt;pivot-&gt;student_id;  // Foreign key (always included)
+    echo $course-&gt;pivot-&gt;course_id;   // Foreign key (always included)
+    echo $course-&gt;pivot-&gt;grade;       // Additional column from withPivot()
+}</code></pre>
+<h4 id="custom-pivot-accessor">Custom Pivot Accessor</h4>
+<p>Customize the pivot property name using <code>as()</code>:</p>
+<pre class="highlight"><code class="language-php">public function courses(): BelongsToMany
+{
+    return $this-&gt;belongsToMany(CourseModel::class)
+        -&gt;withPivot('grade')
+        -&gt;as('enrollment');  // Custom accessor
+}
+
+// Usage
+$course-&gt;enrollment-&gt;grade;
+$course-&gt;enrollment-&gt;student_id;</code></pre>
+<h4 id="including-timestamps">Including Timestamps</h4>
+<p>Use <code>withTimestamps()</code> to automatically include <code>created_at</code> and <code>updated_at</code>:</p>
+<pre class="highlight"><code class="language-php">public function courses(): BelongsToMany
+{
+    return $this-&gt;belongsToMany(CourseModel::class)
+        -&gt;withPivot('grade')
+        -&gt;withTimestamps();
+}
+
+// Access timestamps
+$course-&gt;pivot-&gt;created_at;
+$course-&gt;pivot-&gt;updated_at;</code></pre>
+<p>Custom timestamp column names:</p>
+<pre class="highlight"><code class="language-php">public function courses(): BelongsToMany
+{
+    return $this-&gt;belongsToMany(CourseModel::class)
+        -&gt;withTimestamps('enrolled_at', 'modified_at');
+}</code></pre>
+<h3 id="writing-data">Writing Data</h3>
+<h4 id="attaching-records">Attaching Records</h4>
+<p>Use <code>attach()</code> to create pivot table entries:</p>
+<pre class="highlight"><code class="language-php">$student = model(StudentModel::class)-&gt;find(1);
+
+// Attach single course
+$student-&gt;courses()-&gt;attach(3);
+
+// Attach multiple courses
+$student-&gt;courses()-&gt;attach([3, 4, 5]);
+
+// Attach using entity
+$course = model(CourseModel::class)-&gt;find(3);
+$student-&gt;courses()-&gt;attach($course);
+
+// Attach multiple entities
+$courses = model(CourseModel::class)-&gt;find([3, 4, 5]);
+$student-&gt;courses()-&gt;attach($courses);</code></pre>
+<h5 id="attaching-with-pivot-data">Attaching with Pivot Data</h5>
+<pre class="highlight"><code class="language-php">// Single course with pivot data
+$student-&gt;courses()-&gt;attach(3, ['grade' =&gt; 'A', 'enrolled_at' =&gt; '2024-01-15']);
+
+// Multiple courses with same pivot data
+$student-&gt;courses()-&gt;attach([3, 4, 5], ['grade' =&gt; 'B']);
+
+// Multiple courses with different pivot data
+$student-&gt;courses()-&gt;attach([
+    3 =&gt; ['grade' =&gt; 'A', 'enrolled_at' =&gt; '2024-01-15'],
+    4 =&gt; ['grade' =&gt; 'B+', 'enrolled_at' =&gt; '2024-01-20'],
+    5 =&gt; ['grade' =&gt; 'A-', 'enrolled_at' =&gt; '2024-01-25'],
+]);</code></pre>
+<p>When using <code>withTimestamps()</code>, timestamps are automatically added.</p>
+<h4 id="detaching-records">Detaching Records</h4>
+<p>Use <code>detach()</code> to remove pivot table entries:</p>
+<pre class="highlight"><code class="language-php">$student = model(StudentModel::class)-&gt;find(1);
+
+// Detach single course
+$count = $student-&gt;courses()-&gt;detach(3);
+
+// Detach multiple courses
+$count = $student-&gt;courses()-&gt;detach([3, 4]);
+
+// Detach all courses
+$count = $student-&gt;courses()-&gt;detach();</code></pre>
+<h4 id="syncing-relationships">Syncing Relationships</h4>
+<p>Use <code>sync()</code> to make the relationship match exactly a list of IDs:</p>
+<pre class="highlight"><code class="language-php">$student = model(StudentModel::class)-&gt;find(1);
+
+// Student will have exactly these courses
+$result = $student-&gt;courses()-&gt;sync([1, 3, 5]);
+
+// Returns what changed
+echo count($result['attached']); // Newly attached IDs
+echo count($result['detached']); // Removed IDs
+
+// Sync to empty (detach all)
+$student-&gt;courses()-&gt;sync([]);</code></pre>
+<h5 id="syncing-with-pivot-data">Syncing with Pivot Data</h5>
+<pre class="highlight"><code class="language-php">// Same pivot data for all
+$result = $student-&gt;courses()-&gt;sync([1, 2, 3], ['active' =&gt; true]);
+
+// Different pivot data for each
+$result = $student-&gt;courses()-&gt;sync([
+    1 =&gt; ['grade' =&gt; 'A', 'active' =&gt; true],
+    2 =&gt; ['grade' =&gt; 'B+', 'active' =&gt; true],
+    3 =&gt; ['grade' =&gt; 'A-', 'active' =&gt; false],
+]);
+
+// Mixed format
+$result = $student-&gt;courses()-&gt;sync([
+    1 =&gt; ['grade' =&gt; 'A+'],  // Update grade
+    2,                       // Keep (no pivot changes)
+    3 =&gt; ['grade' =&gt; 'B'],   // Update or set grade
+]);</code></pre>
+<p>When syncing with pivot data, the result includes:</p>
+<ul>
+<li><code>attached</code> - Newly attached IDs</li>
+<li><code>detached</code> - Removed IDs</li>
+<li><code>updated</code> - Existing IDs with updated pivot data</li>
+</ul>
+<h4 id="creating-and-attaching-new-records">Creating and Attaching New Records</h4>
+<p>Use <code>save()</code> to create a new related record and automatically attach it:</p>
+<pre class="highlight"><code class="language-php">$student = model(StudentModel::class)-&gt;find(1);
+
+// Create new course and attach
+$course = $student-&gt;courses()-&gt;save([
+    'title'   =&gt; 'Machine Learning',
+    'code'    =&gt; 'CS405',
+    'credits' =&gt; 4,
+]);
+
+// Using entity
+$newCourse = new Course();
+$newCourse-&gt;title = 'Deep Learning';
+$newCourse-&gt;code = 'CS505';
+$newCourse-&gt;credits = 5;
+$course = $student-&gt;courses()-&gt;save($newCourse);</code></pre>
+<p><strong>Important:</strong> <code>save()</code> only works with NEW records (no primary key). Use <code>attach()</code> for existing records.</p>
+<p>Use <code>saveMany()</code> to create and attach multiple new records:</p>
+<pre class="highlight"><code class="language-php">$student = model(StudentModel::class)-&gt;find(1);
+
+// Create and attach multiple courses
+$ids = $student-&gt;courses()-&gt;saveMany([
+    ['title' =&gt; 'AI Basics', 'code' =&gt; 'CS501', 'credits' =&gt; 3],
+    ['title' =&gt; 'Neural Networks', 'code' =&gt; 'CS502', 'credits' =&gt; 4],
+]);
+
+// Disable transaction for partial success
+$ids = $student-&gt;courses()-&gt;saveMany([...], useTransaction: false);</code></pre>
+<h3 id="available-methods">Available Methods</h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>attach($ids, $pivotData = [])</code></td>
+<td>Create pivot entries to link existing records</td>
+</tr>
+<tr>
+<td><code>detach($ids = null)</code></td>
+<td>Remove pivot entries (detach all if no IDs provided)</td>
+</tr>
+<tr>
+<td><code>sync($ids, $pivotData = [])</code></td>
+<td>Synchronize to match exactly the provided IDs</td>
+</tr>
+<tr>
+<td><code>save($data)</code></td>
+<td>Create new related record and attach it</td>
+</tr>
+<tr>
+<td><code>saveMany($data, $useTransaction = true)</code></td>
+<td>Create multiple new related records and attach them</td>
+</tr>
+<tr>
+<td><code>withPivot($columns)</code></td>
+<td>Include additional pivot table columns</td>
+</tr>
+<tr>
+<td><code>withTimestamps($created = 'created_at', $updated = 'updated_at')</code></td>
+<td>Include pivot timestamps</td>
+</tr>
+<tr>
+<td><code>as($accessor)</code></td>
+<td>Customize pivot property name</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+    <a href="https://github.com/michalsn/codeigniter-relations" target="_blank" rel="noopener" title="GitHub" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.6.0/build/highlight.min.js"></script>
+      
+        <script src="../../assets/hljs.js"></script>
+      
+    
+  </body>
+</html>
