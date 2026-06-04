@@ -50,11 +50,9 @@ trait HasLazyRelations
         $model = $this->getRelationModel();
 
         if ($model !== null && method_exists($model, $key)) {
-            if (! isset($this->loadedRelations[$key]) && ! array_key_exists($key, $this->attributes)) {
-                return $this->handleRelation($key, $model);
-            }
-
-            return $this->attributes[$key] ?? null;
+            return isset($this->loadedRelations[$key])
+                ? null
+                : $this->handleRelation($key, $model);
         }
 
         return parent::__get($key);
