@@ -58,6 +58,11 @@ abstract class Relation
     protected ?string $relationName = null;
 
     /**
+     * Setter bound to Entity scope for attaching eager-loaded relations.
+     */
+    private static ?Closure $entityRelationSetter = null;
+
+    /**
      * Constructor
      *
      * @param Model       $parentModel       The parent model instance
@@ -287,12 +292,17 @@ abstract class Relation
      */
     protected function setEntityRelation(Entity $entity, string $relationName, mixed $value): void
     {
-        $setter = function (string $name, mixed $relationValue): void {
-            // @phpstan-ignore-next-line Bound to Entity scope below.
-            $this->attributes[$name] = $relationValue;
-        };
+        if (self::$entityRelationSetter === null) {
+            self::$entityRelationSetter = Closure::bind(
+                static function (Entity $target, string $name, mixed $relationValue): void {
+                    $target->attributes[$name] = $relationValue;
+                },
+                null,
+                Entity::class,
+            );
+        }
 
-        Closure::bind($setter, $entity, Entity::class)($relationName, $value);
+        (self::$entityRelationSetter)($entity, $relationName, $value);
     }
 
     /**
