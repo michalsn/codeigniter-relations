@@ -74,7 +74,7 @@ final class HasOneTest extends TestCase
         $profile = $user->profile;
         $this->assertInstanceOf(Profile::class, $profile);
 
-        $this->assertIsString(serialize($user));
+        $this->assertInstanceOf(User::class, unserialize(serialize($user)));
     }
 
     public function testEagerLoadHasOneAsArray()
