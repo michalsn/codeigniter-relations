@@ -65,6 +65,18 @@ final class HasOneTest extends TestCase
         $this->assertSame($users[0]->id, $profile->user_id);
     }
 
+    public function testEntityCanBeSerializedAfterLazyLoadingRelation()
+    {
+        $user = model(UserModel::class)->find(1);
+        $this->assertInstanceOf(User::class, $user);
+
+        /** @var mixed $profile */
+        $profile = $user->profile;
+        $this->assertInstanceOf(Profile::class, $profile);
+
+        $this->assertIsString(serialize($user));
+    }
+
     public function testEagerLoadHasOneAsArray()
     {
         $user = model(UserModel::class)

@@ -34,9 +34,6 @@ trait HasLazyRelations
      */
     private array $loadedRelations = [];
 
-    private ?Model $relationModel       = null;
-    private bool $relationModelResolved = false;
-
     /**
      * Override property access to enable lazy loading
      *
@@ -92,20 +89,13 @@ trait HasLazyRelations
     }
 
     /**
-     * Resolve the matching model once for the lifetime of the entity instance.
+     * Resolve the matching model without storing live model instances on the entity.
      */
     private function getRelationModel(): ?Model
     {
-        if ($this->relationModelResolved) {
-            return $this->relationModel;
-        }
-
         $className = $this->findModelClass();
 
-        $this->relationModel         = $className === null ? null : model($className);
-        $this->relationModelResolved = true;
-
-        return $this->relationModel;
+        return $className === null ? null : model($className);
     }
 
     /**
