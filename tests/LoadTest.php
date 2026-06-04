@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests;
 
 use CodeIgniter\Test\DatabaseTestTrait;
+use Michalsn\CodeIgniterRelations\Exceptions\RelationException;
 use Tests\Support\Database\Seeds\SeedTests;
 use Tests\Support\Entities\Country;
 use Tests\Support\Entities\User;
@@ -191,6 +192,18 @@ final class LoadTest extends TestCase
         foreach ($user->posts as $post) {
             $this->assertLessThanOrEqual(1, count($post->comments));
         }
+    }
+
+    public function testLoadWithArrayRelationsRejectsSeparateCallback()
+    {
+        /** @var User|null $user */
+        $user = model(UserModel::class)->find(1);
+        $this->assertInstanceOf(User::class, $user);
+
+        $this->expectException(RelationException::class);
+        $this->expectExceptionMessage('The callback argument cannot be used when loading relations with array syntax');
+
+        $user->load(['posts'], static fn ($q) => $q->where('status', 'published'));
     }
 
     public function testLoadPreservesLoadedRelationMetadata()

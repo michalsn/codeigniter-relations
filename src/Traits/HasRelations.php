@@ -102,6 +102,10 @@ trait HasRelations
      */
     public function loadRelationsOn(mixed $entities, array|string $relations, ?Closure $callback = null): mixed
     {
+        if (is_array($relations) && $callback !== null) {
+            throw RelationException::forCallbackWithArrayRelations();
+        }
+
         // Normalize relations to array
         if (is_string($relations)) {
             $relations = $callback === null ? [$relations] : [$relations => $callback];

@@ -28,6 +28,11 @@ final class RelationException extends RuntimeException
         return new self(lang('Relations.relationMethodNotFound', [$methodName, $modelClass]));
     }
 
+    public static function forCallbackWithArrayRelations(): static
+    {
+        return new self(lang('Relations.callbackWithArrayRelations'));
+    }
+
     public static function forSaveManyNotSupportedForSingular(string $relationType): static
     {
         return new self(lang('Relations.saveManyNotSupportedForSingular', [$relationType]));

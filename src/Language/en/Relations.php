@@ -5,6 +5,7 @@ return [
     'morphToNotWritable'              => 'Cannot save data through morphTo relation. MorphTo is an inverse polymorphic relation and is read-only. To modify related data, save directly through the parent model.',
     'invalidMorphModel'               => 'Cannot load MorphTo relation: model class "{0}" does not exist or could not be instantiated.',
     'relationMethodNotFound'          => 'Relation method "{0}" not found on {1}.',
+    'callbackWithArrayRelations'      => 'The callback argument cannot be used when loading relations with array syntax. Use relation names as array keys with callbacks as values instead.',
     'saveManyNotSupportedForSingular' => 'The saveMany() method is not supported for {0} relations. Use save() instead.',
     'missingParentContext'            => 'Cannot call {0} without parent context. Use $entity->relation()->{0} instead.',
     'methodNotSupported'              => 'The {0} method is not supported for {1} relations.',
