@@ -295,6 +295,7 @@ abstract class Relation
         if (self::$entityRelationSetter === null) {
             self::$entityRelationSetter = Closure::bind(
                 static function (Entity $target, string $name, mixed $relationValue): void {
+                    /** @psalm-suppress InaccessibleProperty Bound to Entity scope below. */
                     $target->attributes[$name] = $relationValue;
                 },
                 null,
